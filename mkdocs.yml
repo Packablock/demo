@@ -1,0 +1,30 @@
+site_name: Packablock Supply Chain Demo
+site_description: Zero-Trust Supply Chain Policy Control Demo & Simulation
+site_author: Aaron Bronow
+repo_name: Packablock/demo
+repo_url: https://github.com/Packablock/demo
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: teal
+      accent: cyan
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: teal
+      accent: cyan
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - content.code.copy
+
+nav:
+  - Welcome: index.md
+  - Integration Guide: setup.md
+  - Security & Policy: policy.md

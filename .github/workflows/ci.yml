@@ -1,0 +1,61 @@
+name: "Packablock supply chain verification"
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  validate-supply-chain:
+    name: "Verify & Audit Dependencies"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun Environment
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install Workspace Dependencies
+        run: |
+          bun install
+
+      - name: Install Python Subproject Dependencies
+        run: |
+          pip install -r packages/python-processor/requirements.txt
+
+      - name: Install Packablock Client CLI
+        run: |
+          bun install -g Packablock/packablock-client
+
+      - name: Verify Cryptographic Chain Integrity
+        run: |
+          pkablk check packablock.yaml
+
+      - name: Audit Dependency Constraints
+        run: |
+          pkablk audit packablock.yaml --visualize
+
+      - name: Detect and Append Manifest Changes
+        run: |
+          # Automatically calculate and append changes to the cryptographically signed ledger
+          pkablk append packablock.yaml -l bun.lock
+
+      - name: Check for Uncommitted Changes
+        run: |
+          # If pkablk append found differences and modified packablock.yaml, fail CI to enforce commit check
+          if ! git diff --exit-code packablock.yaml; then
+            echo "::error::Local dependencies changed but packablock.yaml was not updated. Please commit the updated packablock.yaml."
+            exit 1
+          fi

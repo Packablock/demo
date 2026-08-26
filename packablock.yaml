@@ -1,0 +1,23 @@
+lockfiles:
+  bun.lock:
+    packages:
+      - "@types/lodash": 4.17.25
+      - "@types/node": 22.20.1
+      - lodash: 4.18.1
+      - typescript: 5.9.3
+      - typescript-service: workspace:packages/typescript-service
+      - undici-types: 6.21.0
+      - zod: 3.25.76
+package.json:
+  constraints:
+    - typescript: ^5.5.0
+    - "@types/node": ^22.0.0
+---
+$yaml-chain-meta:
+  version: 1.0.0
+  block_index: 0
+  timestamp: 2026-08-26T02:21:05.272Z
+  hashing_strategy: raw
+  data_hash: 6c0643315be7c7286745ce91554a524954901ea0d48de44d18b532cc24d7f70e
+  prev_meta_hash: "0000000000000000000000000000000000000000000000000000000000000000"
+  meta_hash: 2eb4c01f33f0ae27f4fea46cadee4ae647e94fc910123452f8f22431156c3b91
