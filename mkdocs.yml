@@ -26,5 +26,6 @@ theme:
 
 nav:
   - Welcome: index.md
+  - Onboarding Steps: packablock-init.md
   - Integration Guide: setup.md
   - Security & Policy: policy.md
