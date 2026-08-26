@@ -69,3 +69,6 @@ jobs:
           PACKABLOCK_REPO_TOKEN: ${{ secrets.PACKABLOCK_REPO_TOKEN }}
         run: |
           pkablk push packablock.yaml
+
+      - name: 🔥 Roast My Build (CI Fitness Test)
+        uses: aaronbronow/roast-my-build@v0.1.0
