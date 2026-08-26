@@ -55,5 +55,5 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh pr review --approve "${{ github.event.pull_request.html_url }}"
+          gh pr review --approve "${{ github.event.pull_request.html_url }}" || echo "GitHub Actions review approval not permitted or skipped."
           gh pr merge --auto --squash --delete-branch "${{ github.event.pull_request.html_url }}"
