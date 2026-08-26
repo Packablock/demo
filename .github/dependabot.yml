@@ -1,0 +1,13 @@
+version: 2
+updates:
+  # Daily updates for Bun (NPM package manager compatible)
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+
+  # Daily updates for Python dependencies
+  - package-ecosystem: "pip"
+    directory: "/packages/python-processor"
+    schedule:
+      interval: "daily"

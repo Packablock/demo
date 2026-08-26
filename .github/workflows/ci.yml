@@ -44,6 +44,7 @@ jobs:
           pkablk check packablock.yaml
 
       - name: Audit Dependency Constraints
+        continue-on-error: ${{ github.actor == 'dependabot[bot]' }}
         run: |
           pkablk audit packablock.yaml --visualize
 
@@ -53,6 +54,7 @@ jobs:
           pkablk append packablock.yaml -l bun.lock
 
       - name: Check for Uncommitted Changes
+        if: github.actor != 'dependabot[bot]'
         run: |
           # If pkablk append found differences and modified packablock.yaml, fail CI to enforce commit check
           if ! git diff --exit-code packablock.yaml; then

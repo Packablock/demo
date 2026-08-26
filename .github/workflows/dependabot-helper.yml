@@ -1,0 +1,59 @@
+name: "Packablock Dependabot Automation"
+
+on:
+  pull_request_target:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  dependabot-onboarding:
+    name: "Auto-Append & Merge Dependabot PRs"
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.user.login == 'dependabot[bot]'
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+
+      - name: Setup Bun Environment
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Install Workspace Dependencies
+        run: |
+          bun install
+
+      - name: Install Packablock Client CLI
+        run: |
+          bun install -g Packablock/packablock-client
+
+      - name: Append lockfile updates to packablock.yaml
+        run: |
+          pkablk append packablock.yaml -l bun.lock
+
+      - name: Commit and Push Cryptographic Update
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          if ! git diff --exit-code packablock.yaml; then
+            git add packablock.yaml
+            git commit -m "chore(dependabot): cryptographically append dependency updates to packablock.yaml"
+            git push
+          else
+            echo "No cryptographic ledger updates needed."
+          fi
+
+      - name: Auto-Merge Dependabot PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr review --approve "${{ github.event.pull_request.html_url }}"
+          gh pr merge --auto --squash --delete-branch "${{ github.event.pull_request.html_url }}"

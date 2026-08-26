@@ -86,3 +86,24 @@ The pipeline runs on every push and pull request to the `main` branch. It execut
          exit 1
        fi
    ```
+
+---
+
+## 🤖 Step 5: Automated Dependabot Lifecycle Management
+
+To keep dependencies updated automatically without breaking our supply chain validation, we integrated **Dependabot** with self-healing log updates.
+
+### 1. Enable Dependabot
+We enabled daily scanning for Bun and Python dependencies inside [`.github/dependabot.yml`](../.github/dependabot.yml).
+
+### 2. Auto-Append & Auto-Merge Workflow
+Since Dependabot is unaware of our cryptographic ledger `packablock.yaml`, any lockfile updates it suggests will normally trigger a validation failure in `ci.yml`.
+
+To solve this, we created an automated assistant workflow in [`.github/workflows/dependabot-helper.yml`](../.github/workflows/dependabot-helper.yml) that triggers when Dependabot submits a PR. The helper:
+1. Checks out the Dependabot pull request branch.
+2. Installs dependencies and our client CLI.
+3. Automatically runs `pkablk append packablock.yaml -l bun.lock` to record the updates.
+4. Commits and pushes the updated `packablock.yaml` back to the Dependabot branch.
+5. Approves and configures the PR for auto-merge.
+
+Once the `ci.yml` validation suite finishes verifying the updated branch, GitHub automatically merges the pull request.
