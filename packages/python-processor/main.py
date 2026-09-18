@@ -6,14 +6,21 @@ def main():
     print("🐍 python-processor started...")
     
     # Read workspace root packablock configuration if available
-    config_path = "../../packablock.yaml"
-    if os.path.exists(config_path):
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    candidates = [
+        os.path.join(script_dir, "../../packablock.yaml"),
+        os.path.join(os.getcwd(), "packablock.yaml"),
+        "packablock.yaml",
+    ]
+    config_path = next((p for p in candidates if os.path.exists(p)), None)
+    if config_path:
         with open(config_path, 'r') as f:
             try:
-                data = yaml.safe_load(f)
+                docs = list(yaml.safe_load_all(f))
+                meta_blocks = [d for d in docs if isinstance(d, dict) and "$yaml-chain-meta" in d]
                 print("🔒 Loaded Packablock policy metadata successfully.")
-                print(f"Log type: {data.get('type', 'N/A')}")
-                print(f"Chain length: {len(data.get('blocks', []))} blocks")
+                print(f"Total YAML documents: {len(docs)}")
+                print(f"Chain length: {len(meta_blocks)} blocks")
             except yaml.YAMLError as exc:
                 print(f"Error loading packablock.yaml: {exc}")
     else:

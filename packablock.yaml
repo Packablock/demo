@@ -148,3 +148,32 @@ $yaml-chain-meta:
   data_hash: 31e0940458d8f09734acea6d28a63da4d9dc83c67352cb5df4be3b756c90a2e8
   prev_meta_hash: 1f0c1de0f979bb711b7b67c1055750d59bbeb939f7983e6b884c33d671fca65e
   meta_hash: d7e95ee61ae8a48deef6e374e8c15af11fee331cc179921015232c3e3c0f0c66
+---
+lockfiles:
+  bun.lock:
+    packages:
+      - "@types/node":
+          - old: 26.3.0
+          - new: 26.6.1
+          - loc: 8,9
+      - undici-types:
+          - old: 8.3.0
+          - new: 8.9.0
+          - loc: 27,67
+      - zod:
+          - old: 4.4.3
+          - new: 4.6.5
+          - loc: 17,9
+package.json:
+  constraints:
+    - typescript: ^7.0.2
+    - "@types/node": ^26.2.0
+---
+$yaml-chain-meta:
+  version: 1.0.0
+  block_index: 4
+  timestamp: 2026-09-18T23:31:09.277Z
+  hashing_strategy: raw
+  data_hash: 56efd9be2a5c113f0a56729b66ad12c6891921c206487bd6e1b3bf8b4c92b3f9
+  prev_meta_hash: d7e95ee61ae8a48deef6e374e8c15af11fee331cc179921015232c3e3c0f0c66
+  meta_hash: 71ca6a883c8346dea4b676d63a1738ddfc1191855930f3325a81d07494ee1c89

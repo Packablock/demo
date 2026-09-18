@@ -6,7 +6,7 @@
     "packages/*"
   ],
   "scripts": {
-    "dev:typescript": "bun --cwd packages/typescript-service run src/index.ts",
+    "dev:typescript": "bun run packages/typescript-service/src/index.ts",
     "run:python": "python3 packages/python-processor/main.py",
     "docs:serve": "mkdocs serve",
     "docs:build": "mkdocs build"
