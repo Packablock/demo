@@ -72,3 +72,7 @@ jobs:
 
       - name: 🔥 Roast My Build (CI Fitness Test)
         uses: aaronbronow/roast-my-build@v0.1.0
+        with:
+          build-command: "bun run dev:typescript"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
